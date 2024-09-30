@@ -1,0 +1,37 @@
+package com.example.lavazen.controllers;
+
+import com.example.lavazen.dtos.CreateBookingDTO;
+import com.example.lavazen.dtos.RequestCreateBookingDTO;
+import com.example.lavazen.dtos.ResponseBookingDTO;
+import com.example.lavazen.dtos.ResponseCreateBookingDTO;
+import com.example.lavazen.models.User;
+import com.example.lavazen.services.CarWashingBookingService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/bookings")
+public class CarWashingBookingController {
+    @Autowired
+    private CarWashingBookingService service;
+
+    @PostMapping
+    public ResponseEntity<ResponseCreateBookingDTO> createBooking(
+            @AuthenticationPrincipal User user,
+            @RequestBody @Valid RequestCreateBookingDTO bookingDTO
+    ) {
+        CreateBookingDTO dto = new CreateBookingDTO(user, bookingDTO.washingId(), bookingDTO.date(), bookingDTO.startHour());
+        return new ResponseEntity<>(this.service.create(dto), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ResponseBookingDTO>> getAllBookings() {
+        return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
+    }
+}

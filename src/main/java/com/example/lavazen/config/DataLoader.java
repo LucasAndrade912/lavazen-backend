@@ -2,11 +2,13 @@ package com.example.lavazen.config;
 
 import com.example.lavazen.models.CarWashBooking;
 import com.example.lavazen.models.User;
+import com.example.lavazen.models.UserRole;
 import com.example.lavazen.models.Washing;
 import com.example.lavazen.repositories.CarWashBookingRepository;
 import com.example.lavazen.repositories.UserRepository;
 import com.example.lavazen.repositories.WashingRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -58,23 +60,29 @@ public class DataLoader implements CommandLineRunner {
                 150.00
         );
 
-        User user1 = new User("Lucas Andrade", "lucas@email.com", "lucas12345", LocalDate.of(2003, 10, 17), "Rua João Pessoa, 999", "83911223344");
-        User user2 = new User("Johnner Yelcde", "johnner@email.com", "johnner12345", LocalDate.of(2003, 10, 10), "Rua João Pessoa, 556", "83955667788");
+        User user1 = new User("Lucas Andrade", "lucas@email.com", new BCryptPasswordEncoder().encode("lucas12345"), LocalDate.of(2003, 10, 17), "Rua João Pessoa, 999", "83911223344", UserRole.EMPLOYEE);
+        User user2 = new User("Johnner Yelcde", "johnner@email.com", new BCryptPasswordEncoder().encode("johnner12345"), LocalDate.of(2003, 10, 10), "Rua João Pessoa, 556", "83955667788", UserRole.CUSTOMER);
 
         CarWashBooking booking1 = new CarWashBooking(LocalDate.of(2024, 10, 1), LocalTime.of(10, 30), user1, simpleWashing);
         CarWashBooking booking2 = new CarWashBooking(LocalDate.of(2024, 10, 6), LocalTime.of(11, 0), user1, completeWashing);
         CarWashBooking booking3 = new CarWashBooking(LocalDate.of(2024, 10, 4), LocalTime.of(8, 0), user2, waxWashing);
 
-        this.userRepository.save(user1);
-        this.userRepository.save(user2);
+        if (this.userRepository.count() == 0) {
+            this.userRepository.save(user1);
+            this.userRepository.save(user2);
+        }
 
-        this.washingRepository.save(simpleWashing);
-        this.washingRepository.save(completeWashing);
-        this.washingRepository.save(dryCleaning);
-        this.washingRepository.save(waxWashing);
+        if (this.washingRepository.count() == 0) {
+            this.washingRepository.save(simpleWashing);
+            this.washingRepository.save(completeWashing);
+            this.washingRepository.save(dryCleaning);
+            this.washingRepository.save(waxWashing);
+        }
 
-        this.carWashBookingRepository.save(booking1);
-        this.carWashBookingRepository.save(booking2);
-        this.carWashBookingRepository.save(booking3);
+        if (this.carWashBookingRepository.count() == 0) {
+            this.carWashBookingRepository.save(booking1);
+            this.carWashBookingRepository.save(booking2);
+            this.carWashBookingRepository.save(booking3);
+        }
     }
 }

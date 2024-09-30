@@ -8,8 +8,8 @@ import java.util.List;
 @Table(name = "washing")
 public class Washing {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_sequence")
-    @SequenceGenerator(name = "custom_sequence", sequenceName = "washing_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_washing_sequence")
+    @SequenceGenerator(name = "custom_washing_sequence", sequenceName = "washing_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

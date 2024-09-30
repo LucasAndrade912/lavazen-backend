@@ -9,8 +9,8 @@ import java.time.LocalTime;
 @Table(name = "car_wash_bookings")
 public class CarWashBooking {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_sequence")
-    @SequenceGenerator(name = "custom_sequence", sequenceName = "car_wash_booking_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_wash_booking_sequence")
+    @SequenceGenerator(name = "custom_wash_booking_sequence", sequenceName = "car_wash_booking_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

@@ -78,4 +78,25 @@ public class AuthorizationService implements UserDetailsService {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return new ResponseProfileDTO(user.getId(), user.getName(), user.getPhone(), user.getBirthDay().format(dateFormatter), user.getAddress());
     }
+
+    public ResponseProfileDTO updateProfile(User user, RequestUpdateProfileDTO requestUpdateProfileDTO) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate birthdayDate = LocalDate.parse(requestUpdateProfileDTO.birthDay(), formatter);
+
+        if (birthdayDate.isAfter(LocalDate.now().minusYears(18))) {
+            throw new UserUnderAgeException();
+        }
+
+        user.setName(requestUpdateProfileDTO.name());
+        user.setAddress(requestUpdateProfileDTO.address());
+        user.setPhone(requestUpdateProfileDTO.phone());
+        user.setBirthDay(birthdayDate);
+
+        User saved = this.repository.save(user);
+        return new ResponseProfileDTO(saved.getId(), saved.getName(), saved.getPhone(), saved.getBirthDay().format(formatter), saved.getAddress());
+    }
+
+    public void deleteProfile(User user) {
+        this.repository.delete(user);
+    }
 }

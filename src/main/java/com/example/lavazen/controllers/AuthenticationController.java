@@ -41,4 +41,20 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(this.authorizationService.profile(user));
     }
+
+    @PatchMapping("/profile")
+    public ResponseEntity<ResponseProfileDTO> updateProfile(
+            @AuthenticationPrincipal User user,
+            @RequestBody @Valid RequestUpdateProfileDTO requestUpdateProfileDTO
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.authorizationService.updateProfile(user, requestUpdateProfileDTO));
+    }
+
+    @DeleteMapping("/profile")
+    public ResponseEntity deleteProfile(
+            @AuthenticationPrincipal User user
+    ) {
+        this.authorizationService.deleteProfile(user);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

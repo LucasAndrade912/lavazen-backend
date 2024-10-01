@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/washings")
+@CrossOrigin
 public class WashingController {
     @Autowired
     private WashingService service;

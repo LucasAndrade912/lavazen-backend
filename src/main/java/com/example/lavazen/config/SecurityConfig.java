@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/bookings").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.DELETE, "/bookings").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.PATCH, "/bookings").hasRole("CUSTOMER")
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

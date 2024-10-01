@@ -31,12 +31,13 @@ public class WashingController {
 
     @PostMapping
     public ResponseEntity<ResponseCreateWashingDTO> createWashing(@RequestBody @Valid RequestCreateWashingDTO dto) {
-        return new ResponseEntity<>(this.service.create(dto), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.service.create(dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long washingId) {
+        System.out.println(washingId);
         this.service.delete(washingId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

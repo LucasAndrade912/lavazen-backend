@@ -1,5 +1,6 @@
 package com.example.lavazen.config;
 
+import com.example.lavazen.exceptions.InvalidTokenException;
 import com.example.lavazen.services.TokenService;
 import com.example.lavazen.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -29,7 +30,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (token != null){
             String email = this.tokenService.validateToken(token);
-            UserDetails user = userRepository.findByEmail(email);
+            UserDetails user = userRepository.findByEmail(email).orElseThrow(InvalidTokenException::new);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

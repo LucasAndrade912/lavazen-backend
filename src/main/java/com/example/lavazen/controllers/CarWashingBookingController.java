@@ -25,9 +25,9 @@ public class CarWashingBookingController {
     public ResponseEntity<ResponseCreateBookingDTO> createBooking(
             @AuthenticationPrincipal User user,
             @RequestBody @Valid RequestCreateBookingDTO bookingDTO
-    ) {
+    ) throws Exception {
         CreateBookingDTO dto = new CreateBookingDTO(user, bookingDTO.washingId(), bookingDTO.date(), bookingDTO.startHour());
-        return new ResponseEntity<>(this.service.create(dto), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.service.create(dto));
     }
 
     @GetMapping

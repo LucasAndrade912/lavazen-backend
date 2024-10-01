@@ -9,8 +9,6 @@ public record ResponseRegisterUserDTO(
         Long id,
         String name,
         String email,
-        String password,
-        UserRole role,
         String birthDay
 ) {
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -20,8 +18,6 @@ public record ResponseRegisterUserDTO(
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPassword(),
-                user.getRole(),
                 user.getBirthDay().format(formatter)
         );
     }

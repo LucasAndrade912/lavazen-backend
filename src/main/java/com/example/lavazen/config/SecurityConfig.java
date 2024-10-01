@@ -28,12 +28,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/login", "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/washings").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/washings/{id}").authenticated()
                         .requestMatchers(HttpMethod.POST, "/washings").hasRole("EMPLOYEE")
-                        .requestMatchers(HttpMethod.DELETE, "/washings").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.DELETE, "/washings/{id}").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.PATCH, "/washings").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.GET, "/bookings").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.POST, "/bookings").hasRole("CUSTOMER")
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/bookings").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.PATCH, "/bookings").hasRole("CUSTOMER")
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

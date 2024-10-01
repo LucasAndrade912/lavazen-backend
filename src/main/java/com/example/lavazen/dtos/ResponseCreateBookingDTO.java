@@ -9,6 +9,8 @@ public record ResponseCreateBookingDTO(
         Long id,
         String date,
         String startHour,
+        String carModel,
+        String paymentMethod,
         String washingName,
         Double washingPrice,
         Long washingDuration
@@ -20,6 +22,8 @@ public record ResponseCreateBookingDTO(
                 booking.getId(),
                 booking.getDate().format(dateFormatter),
                 booking.getStartHour().toString(),
+                booking.getPaymentMethod().getMethod(),
+                booking.getCarModel(),
                 booking.getWashing().getName(),
                 booking.getWashing().getPrice(),
                 booking.getWashing().getDuration().toMinutes()

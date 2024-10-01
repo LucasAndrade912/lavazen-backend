@@ -72,7 +72,7 @@ public class CarWashingBookingService {
             }
         });
 
-        CarWashBooking booking = new CarWashBooking(date, startHour, createBookingDTO.user(), washing);
+        CarWashBooking booking = new CarWashBooking(createBookingDTO.carModel(), createBookingDTO.carPlate(), createBookingDTO.paymentMethod(), date, startHour, createBookingDTO.user(), washing);
         CarWashBooking bookingSaved = this.carWashBookingRepository.save(booking);
 
         return new ResponseCreateBookingDTO(bookingSaved);

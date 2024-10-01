@@ -27,7 +27,15 @@ public class CarWashingBookingController {
             @AuthenticationPrincipal User user,
             @RequestBody @Valid RequestCreateBookingDTO bookingDTO
     ) throws Exception {
-        CreateBookingDTO dto = new CreateBookingDTO(user, bookingDTO.washingId(), bookingDTO.date(), bookingDTO.startHour());
+        CreateBookingDTO dto = new CreateBookingDTO(
+                user,
+                bookingDTO.washingId(),
+                bookingDTO.carModel(),
+                bookingDTO.carPlate(),
+                bookingDTO.paymentMethod(),
+                bookingDTO.date(),
+                bookingDTO.startHour()
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(this.service.create(dto));
     }
 

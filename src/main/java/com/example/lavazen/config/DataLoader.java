@@ -1,9 +1,6 @@
 package com.example.lavazen.config;
 
-import com.example.lavazen.models.CarWashBooking;
-import com.example.lavazen.models.User;
-import com.example.lavazen.models.UserRole;
-import com.example.lavazen.models.Washing;
+import com.example.lavazen.models.*;
 import com.example.lavazen.repositories.CarWashBookingRepository;
 import com.example.lavazen.repositories.UserRepository;
 import com.example.lavazen.repositories.WashingRepository;
@@ -64,9 +61,9 @@ public class DataLoader implements CommandLineRunner {
         User user1 = new User("Lucas Andrade", "lucas@email.com", new BCryptPasswordEncoder().encode("lucas12345"), LocalDate.of(2003, 10, 17), "Rua João Pessoa, 999", "83911223344", UserRole.EMPLOYEE);
         User user2 = new User("Johnner Yelcde", "johnner@email.com", new BCryptPasswordEncoder().encode("johnner12345"), LocalDate.of(2003, 10, 10), "Rua João Pessoa, 556", "83955667788", UserRole.CUSTOMER);
 
-        CarWashBooking booking1 = new CarWashBooking(LocalDate.of(2024, 10, 1), LocalTime.of(10, 30), user1, simpleWashing);
-        CarWashBooking booking2 = new CarWashBooking(LocalDate.of(2024, 10, 6), LocalTime.of(11, 0), user1, completeWashing);
-        CarWashBooking booking3 = new CarWashBooking(LocalDate.of(2024, 10, 4), LocalTime.of(8, 0), user2, waxWashing);
+        CarWashBooking booking1 = new CarWashBooking("BMW", "ASDASD", PaymentMethod.PIX, LocalDate.of(2024, 10, 1), LocalTime.of(10, 30), user1, simpleWashing);
+        CarWashBooking booking2 = new CarWashBooking("BMW", "ASDVF", PaymentMethod.PIX, LocalDate.of(2024, 10, 6), LocalTime.of(11, 0), user1, completeWashing);
+        CarWashBooking booking3 = new CarWashBooking("BMW", "QWEWV", PaymentMethod.CASH, LocalDate.of(2024, 10, 4), LocalTime.of(8, 0), user2, waxWashing);
 
         if (this.userRepository.count() == 0) {
             this.userRepository.save(user1);

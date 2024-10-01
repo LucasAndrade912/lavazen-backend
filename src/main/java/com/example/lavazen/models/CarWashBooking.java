@@ -14,6 +14,15 @@ public class CarWashBooking {
     private Long id;
 
     @Column(nullable = false)
+    private String carModel;
+
+    @Column(nullable = false, unique = true)
+    private String carPlate;
+
+    @Column(nullable = false)
+    private PaymentMethod paymentMethod;
+
+    @Column(nullable = false)
     private LocalDate date;
 
     @Column(nullable = false)
@@ -25,7 +34,10 @@ public class CarWashBooking {
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     private Washing washing;
 
-    public CarWashBooking(LocalDate date, LocalTime startHour, User user, Washing washing) {
+    public CarWashBooking(String carModel, String carPlate, PaymentMethod paymentMethod, LocalDate date, LocalTime startHour, User user, Washing washing) {
+        this.carModel = carModel;
+        this.carPlate = carPlate;
+        this.paymentMethod = paymentMethod;
         this.date = date;
         this.startHour = startHour;
         this.user = user;
@@ -73,5 +85,29 @@ public class CarWashBooking {
 
     public void setWashing(Washing washing) {
         this.washing = washing;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getCarPlate() {
+        return carPlate;
+    }
+
+    public void setCarPlate(String carPlate) {
+        this.carPlate = carPlate;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

@@ -7,9 +7,13 @@ public record ResponseWashingDTO(
         String name,
         String description,
         Double price,
-        Integer duration
+        Long duration
 ) {
     public ResponseWashingDTO(Washing washing) {
-        this(washing.getId(), washing.getName(), washing.getDescription(), washing.getPrice(), washing.getDuration());
+        this(washing.getId(),
+                washing.getName(),
+                washing.getDescription(),
+                washing.getPrice(),
+                washing.getDuration().toMinutes());
     }
 }

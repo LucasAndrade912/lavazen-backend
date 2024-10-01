@@ -2,6 +2,7 @@ package com.example.lavazen.dtos;
 
 import com.example.lavazen.models.CarWashBooking;
 
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 
 public record ResponseCreateBookingDTO(
@@ -10,7 +11,7 @@ public record ResponseCreateBookingDTO(
         String startHour,
         String washingName,
         Double washingPrice,
-        Integer washingDuration
+        Long washingDuration
 ) {
     static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -21,7 +22,7 @@ public record ResponseCreateBookingDTO(
                 booking.getStartHour().toString(),
                 booking.getWashing().getName(),
                 booking.getWashing().getPrice(),
-                booking.getWashing().getDuration()
+                booking.getWashing().getDuration().toMinutes()
         );
     }
 }

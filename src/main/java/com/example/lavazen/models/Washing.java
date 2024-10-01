@@ -2,6 +2,7 @@ package com.example.lavazen.models;
 
 import jakarta.persistence.*;
 
+import java.time.Duration;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ public class Washing {
     private String description;
 
     @Column(nullable = false)
-    private Integer duration; // In seconds
+    private Duration duration; // In seconds
 
     @Column(nullable = false)
     private Double price;
@@ -27,7 +28,7 @@ public class Washing {
     @OneToMany(mappedBy = "washing", cascade = CascadeType.ALL)
     private List<CarWashBooking> bookings;
 
-    public Washing(String name, String description, Integer duration, Double price) {
+    public Washing(String name, String description, Duration duration, Double price) {
         this.name = name;
         this.description = description;
         this.duration = duration;
@@ -61,11 +62,11 @@ public class Washing {
         this.description = description;
     }
 
-    public Integer getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 

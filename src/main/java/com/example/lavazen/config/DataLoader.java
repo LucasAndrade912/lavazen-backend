@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -35,28 +36,28 @@ public class DataLoader implements CommandLineRunner {
         Washing simpleWashing = new Washing(
                 "Lavagem simples",
                 "Inclui lavagem da carroceria com água, detergente automotivo e esponja, limpeza das rodas e vidros, além da aspiração do interior (bancos e carpetes). Alguns locais também incluem aplicação de cera rápida ou silicone nos plásticos.",
-                60,
+                Duration.ofMinutes(60),
                 50.00
         );
 
         Washing completeWashing = new Washing(
                 "Lavagem completa",
                 "Envolve uma lavagem mais detalhada da carroceria, rodas, e para-brisas, além de uma limpeza profunda no interior, como estofados, painéis e vidros internos. Pode incluir a limpeza do motor (dependendo do serviço) e enceramento para dar mais brilho e proteção à pintura.",
-                120,
+                Duration.ofMinutes(120),
                 120.00
         );
 
         Washing dryCleaning = new Washing(
                 "Lavagem a seco",
                 "Utiliza produtos biodegradáveis aplicados com borrifador e removidos com panos de microfibra, que dissolvem e removem a sujeira de forma eficaz sem necessidade de enxágue.",
-                60,
+                Duration.ofMinutes(60),
                 70.00
         );
 
         Washing waxWashing = new Washing(
                 "Lavagem com cera",
                 "Envolve uma lavagem externa detalhada, seguida da aplicação de cera líquida ou em pasta na carroceria. A cera é aplicada com uma esponja ou pano e, depois de seca, é removida com uma flanela para dar brilho e proteger a pintura contra raios UV e sujeira.",
-                120,
+                Duration.ofMinutes(120),
                 150.00
         );
 

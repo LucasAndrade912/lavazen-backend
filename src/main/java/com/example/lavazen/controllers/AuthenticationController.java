@@ -1,15 +1,14 @@
 package com.example.lavazen.controllers;
 
-import com.example.lavazen.dtos.RequestLoginDTO;
-import com.example.lavazen.dtos.RequestRegisterUserDTO;
-import com.example.lavazen.dtos.ResponseLoginDTO;
-import com.example.lavazen.dtos.ResponseRegisterUserDTO;
+import com.example.lavazen.dtos.*;
+import com.example.lavazen.models.User;
 import com.example.lavazen.repositories.UserRepository;
 import com.example.lavazen.services.AuthorizationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,5 +33,12 @@ public class AuthenticationController {
     ) throws Exception {
         ResponseRegisterUserDTO registerUserDTO = this.authorizationService.register(requestRegisterUserDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(registerUserDTO);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ResponseProfileDTO> profile(
+            @AuthenticationPrincipal User user
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.authorizationService.profile(user));
     }
 }

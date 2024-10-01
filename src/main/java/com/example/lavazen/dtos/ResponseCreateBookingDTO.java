@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public record ResponseCreateBookingDTO(
         Long id,
+        String userEmail,
         String date,
         String startHour,
         String carModel,
@@ -20,6 +21,7 @@ public record ResponseCreateBookingDTO(
     public ResponseCreateBookingDTO(CarWashBooking booking) {
         this(
                 booking.getId(),
+                booking.getUser().getEmail(),
                 booking.getDate().format(dateFormatter),
                 booking.getStartHour().toString(),
                 booking.getCarModel(),

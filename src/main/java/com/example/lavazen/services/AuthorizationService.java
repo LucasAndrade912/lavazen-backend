@@ -1,9 +1,6 @@
 package com.example.lavazen.services;
 
-import com.example.lavazen.dtos.RequestLoginDTO;
-import com.example.lavazen.dtos.RequestRegisterUserDTO;
-import com.example.lavazen.dtos.ResponseLoginDTO;
-import com.example.lavazen.dtos.ResponseRegisterUserDTO;
+import com.example.lavazen.dtos.*;
 import com.example.lavazen.exceptions.UserAlreadyExistsException;
 import com.example.lavazen.exceptions.UserUnderAgeException;
 import com.example.lavazen.models.User;
@@ -75,5 +72,10 @@ public class AuthorizationService implements UserDetailsService {
         String token = this.tokenService.generateToken((User) authenticate.getPrincipal());
 
         return new ResponseLoginDTO(token);
+    }
+
+    public ResponseProfileDTO profile(User user) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return new ResponseProfileDTO(user.getId(), user.getName(), user.getPhone(), user.getBirthDay().format(dateFormatter), user.getAddress());
     }
 }

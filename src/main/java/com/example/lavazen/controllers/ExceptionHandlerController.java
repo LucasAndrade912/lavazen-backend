@@ -93,4 +93,20 @@ public class ExceptionHandlerController {
                 .status(httpStatus)
                 .body(new ErrorMessageDTO(httpStatus, "User does not exist or invalid password"));
     }
+
+    @ExceptionHandler(BusyBookingException.class)
+    private ResponseEntity<ErrorMessageDTO> busyBookingHandler(BusyBookingException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        return ResponseEntity
+                .status(httpStatus)
+                .body(new ErrorMessageDTO(httpStatus, e.getMessage()));
+    }
+
+    @ExceptionHandler(OutsideOpeningHoursException.class)
+    private ResponseEntity<ErrorMessageDTO> outsideOpeningHoursHandler(OutsideOpeningHoursException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        return ResponseEntity
+                .status(httpStatus)
+                .body(new ErrorMessageDTO(httpStatus, e.getMessage()));
+    }
 }

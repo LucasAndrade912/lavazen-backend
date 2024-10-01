@@ -34,4 +34,12 @@ public class CarWashingBookingController {
     public ResponseEntity<List<ResponseBookingDTO>> getAllBookings() {
         return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
     }
+
+    @GetMapping("/availabletimes")
+    public ResponseEntity<List<String>> getAvailableTimes(
+            @RequestParam Long washingId,
+            @RequestParam String date
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.service.getAvailableTimes(washingId, date));
+    }
 }

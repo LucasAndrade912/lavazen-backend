@@ -3,10 +3,7 @@ package com.example.lavazen.services;
 import com.example.lavazen.dtos.CreateBookingDTO;
 import com.example.lavazen.dtos.ResponseBookingDTO;
 import com.example.lavazen.dtos.ResponseCreateBookingDTO;
-import com.example.lavazen.exceptions.DateNotIsAfterNowException;
-import com.example.lavazen.exceptions.TimeNotExactException;
-import com.example.lavazen.exceptions.TimeOutsideOfRangeException;
-import com.example.lavazen.exceptions.WashingNotFoundException;
+import com.example.lavazen.exceptions.*;
 import com.example.lavazen.models.CarWashBooking;
 import com.example.lavazen.models.Washing;
 import com.example.lavazen.repositories.CarWashBookingRepository;
@@ -16,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -61,6 +60,18 @@ public class CarWashingBookingService {
             throw new TimeOutsideOfRangeException();
         }
 
+        LocalTime endHour = startHour.plus(washing.getDuration());
+        if (startHour.isBefore(LocalTime.of(8, 0)) || endHour.isAfter(LocalTime.of(18, 0))) {
+            throw new OutsideOpeningHoursException();
+        }
+
+        List<CarWashBooking> bookings = this.carWashBookingRepository.findByDate(date);
+        bookings.forEach(booking -> {
+            if (this.isConflicting(startHour, endHour, booking)) {
+                throw new BusyBookingException();
+            }
+        });
+
         CarWashBooking booking = new CarWashBooking(date, startHour, createBookingDTO.user(), washing);
         CarWashBooking bookingSaved = this.carWashBookingRepository.save(booking);
 
@@ -69,5 +80,47 @@ public class CarWashingBookingService {
 
     public List<ResponseBookingDTO> getAll() {
         return this.carWashBookingRepository.findAll().stream().map(ResponseBookingDTO::new).toList();
+    }
+
+    public List<String> getAvailableTimes(Long washingId, String date) {
+        Washing washing = this.washingRepository.findById(washingId).orElseThrow(WashingNotFoundException::new);
+        Duration duration = washing.getDuration();
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate dateFormatted = LocalDate.parse(date, dateFormatter);
+
+        LocalTime openingTime = LocalTime.of(8, 0);
+        LocalTime closingTime = LocalTime.of(18, 0);
+
+        List<CarWashBooking> bookings = this.carWashBookingRepository.findByDate(dateFormatted);
+        List<String> availableTimes = new ArrayList<>();
+
+        // Iteração durante intervalos de 1 hora entre 8h até 18h
+        LocalTime startInterval = openingTime;
+        while (!startInterval.plus(duration).isAfter(closingTime)) {
+            LocalTime endInterval = startInterval.plus(duration);
+
+            LocalTime finalStartInterval = startInterval;
+            //Verifica se tem conflito
+            boolean isConflited = bookings.stream().anyMatch(booking -> this.isConflicting(finalStartInterval, endInterval, booking));
+
+            // Caso não tenha conflito de horário adiciona na lista de horário disponíveis
+            if (!isConflited) {
+                availableTimes.add(startInterval.toString());
+            }
+
+            startInterval = startInterval.plusHours(1);
+        }
+
+        return availableTimes;
+    }
+
+    private boolean isConflicting(LocalTime startInterval, LocalTime endInterval, CarWashBooking booking) {
+        LocalTime bookingStartHour = booking.getStartHour();
+        LocalTime bookingEndHour = bookingStartHour.plus(booking.getWashing().getDuration());
+
+        // Retorna true se houver interseção nos horários
+        return startInterval.isBefore(bookingEndHour) && endInterval.isAfter(bookingStartHour);
     }
 }

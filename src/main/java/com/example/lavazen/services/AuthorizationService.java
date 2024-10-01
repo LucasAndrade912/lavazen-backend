@@ -61,7 +61,9 @@ public class AuthorizationService implements UserDetailsService {
                 birthdayDate
         );
 
-        return new ResponseRegisterUserDTO(this.repository.save(user));
+        String token = this.tokenService.generateToken(user);
+
+        return new ResponseRegisterUserDTO(this.repository.save(user).getId(), token);
     }
 
     public ResponseLoginDTO login(RequestLoginDTO loginData) {

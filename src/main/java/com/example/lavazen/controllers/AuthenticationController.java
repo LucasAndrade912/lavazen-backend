@@ -27,7 +27,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<ResponseLoginDTO> login(@RequestBody @Valid RequestLoginDTO requestLoginDTO) {
         ResponseLoginDTO responseLoginDTO = this.authorizationService.login(requestLoginDTO);
-        return new ResponseEntity<>(responseLoginDTO, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(responseLoginDTO);
     }
 
     @PostMapping("/register")
@@ -35,6 +35,6 @@ public class AuthenticationController {
             @RequestBody @Valid RequestRegisterUserDTO requestRegisterUserDTO
     ) throws Exception {
         ResponseRegisterUserDTO registerUserDTO = this.authorizationService.register(requestRegisterUserDTO);
-        return new ResponseEntity<>(registerUserDTO, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(registerUserDTO);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.security.core.AuthenticationException;
 
 import java.time.format.DateTimeParseException;
 
@@ -82,5 +83,14 @@ public class ExceptionHandlerController {
         return ResponseEntity
                 .status(httpStatus)
                 .body(new ErrorMessageDTO(httpStatus, e.getMessage()));
+    }
+
+
+    @ExceptionHandler(AuthenticationException.class)
+    private ResponseEntity<ErrorMessageDTO> authenticationHandler(AuthenticationException e) {
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        return ResponseEntity
+                .status(httpStatus)
+                .body(new ErrorMessageDTO(httpStatus, "User does not exist or invalid password"));
     }
 }

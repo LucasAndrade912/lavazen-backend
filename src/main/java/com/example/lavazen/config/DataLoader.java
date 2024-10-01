@@ -35,7 +35,7 @@ public class DataLoader implements CommandLineRunner {
         Washing simpleWashing = new Washing(
                 "Lavagem simples",
                 "Inclui lavagem da carroceria com água, detergente automotivo e esponja, limpeza das rodas e vidros, além da aspiração do interior (bancos e carpetes). Alguns locais também incluem aplicação de cera rápida ou silicone nos plásticos.",
-                30,
+                60,
                 50.00
         );
 

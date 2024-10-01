@@ -22,8 +22,8 @@ public record ResponseCreateBookingDTO(
                 booking.getId(),
                 booking.getDate().format(dateFormatter),
                 booking.getStartHour().toString(),
-                booking.getPaymentMethod().getMethod(),
                 booking.getCarModel(),
+                booking.getPaymentMethod().getMethod(),
                 booking.getWashing().getName(),
                 booking.getWashing().getPrice(),
                 booking.getWashing().getDuration().toMinutes()
